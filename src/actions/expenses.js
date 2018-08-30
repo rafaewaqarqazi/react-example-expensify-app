@@ -1,30 +1,37 @@
 import uuid from 'uuid';
+import database from '../firebase/firebase';
 
 // ADD_EXPENSE
-export const addExpense = ({description = '',note = '',amount = 0, createdAt = 0}/*Input Object Destructuring with default values*/ = {}) => ({
-    //ES5 object return style
-    // return{
-    //     type: 'ADD_EXPENSE',
-    //     expense: {
-    //         id: uuid(),
-    //         description,
-    //         note,
-    //         amount,
-    //         createdAt
-    //     }
-    // }
-
+//ES5 object return style
+// return{
+//     type: 'ADD_EXPENSE',
+//     expense: {
+//         id: uuid(),
+//         description,
+//         note,
+//         amount,
+//         createdAt
+//     }
+// }
+                            /*Input Object Destructuring with default values*/
+export const addExpense = (expense) => ({
     //ES6 Object return style
     type: 'ADD_EXPENSE',
-    expense: {
-        id: uuid(),
-        description,
-        note,
-        amount,
-        createdAt
-    }
+    expense
 });
 
+export const startAddExpense = (expenseData={})=>{
+    return (dispatch)=>{
+        const { description = '',note = '',amount = 0, createdAt = 0 } = expenseData;
+        const expense = { description,note,amount,createdAt };
+        database.ref('expenses').push(expense).then((ref)=>{
+            dispatch(addExpense({
+                id:ref.key,
+                ...expense
+            }));
+        })
+    };
+};
 // REMOVE_EXPENSE
 export const removeExpense = ({ id } = {}) => ({
     type: 'REMOVE_EXPENSE',
