@@ -21,10 +21,8 @@ module.exports = (env)=>{
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            // you can specify a publicPath here
-                            // by default it use publicPath in webpackOptions.output
-                            publicPath: '../'
+                        options:{
+                            publicPath:"../"
                         }
                     },
                     {
@@ -39,8 +37,6 @@ module.exports = (env)=>{
                             sourceMap:true
                         }
                     }
-
-
                 ]
             }]
         },
